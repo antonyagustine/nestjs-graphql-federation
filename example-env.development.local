@@ -1,0 +1,11 @@
+NODE_ENV=development
+
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_USERNAME=admin
+DB_PASSWORD=admin123
+DB_NAME=todo_app
+DB_PORT=5432
+
+USER_PORT=3001
+TODO_PORT=3002
