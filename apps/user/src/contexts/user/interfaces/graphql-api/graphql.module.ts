@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 
 import { CrudResolverModule } from '@user/libs/crud-generator';
 
+import { UserResolver } from './user.resolver';
 import { UserFilterInput } from '../../application/dto/user-list.dto';
 import { CreateUserInput } from '../../application/dto/create-user.input';
 import { UserCreateResponseDTO, UserDTO } from '../../application/dto/user.output';
-import { GetUserByIdQuery } from '../../application/queries/get-user-by-id/get-user-by-id.query';
 import { GetUserListQuery } from '../../application/queries/get-user-list/get-user-list.query';
 import { CreateUserCommand } from '../../application/commands/create-user/user-create.command';
+import { GetUserByIdQuery } from '../../application/queries/get-user-by-id/get-user-by-id.query';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { CreateUserCommand } from '../../application/commands/create-user/user-c
       }
     })
   ],
-  providers: []
+  providers: [
+    UserResolver
+  ]
 })
 export class UserGraphQLModule { }

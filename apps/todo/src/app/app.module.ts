@@ -4,7 +4,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
+import { MercuriusFederationDriver, MercuriusFederationDriverConfig } from '@nestjs/mercurius';
+
+import { Assignee } from '@todo/contexts/todo/application/dto/task.output';
 
 import { TodoModule } from '../contexts/todo/todo.module';
 import { dataSourceOptions } from '../data-config/data-source';
@@ -23,14 +25,14 @@ import { dataSourceOptions } from '../data-config/data-source';
       },
     }),
     CqrsModule.forRoot({}),
-    GraphQLModule.forRoot<MercuriusDriverConfig>({
-      driver: MercuriusDriver,
+    GraphQLModule.forRoot<MercuriusFederationDriverConfig>({
+      driver: MercuriusFederationDriver,
       path: '/todo',
-      graphiql: true,
-      debug: true,
       autoSchemaFile: {
         federation: 2,
-        path: join(process.cwd(), 'todo-schema.gql'),
+      },
+      buildSchemaOptions: {
+        orphanedTypes: [Assignee],
       },
     }),
     TodoModule

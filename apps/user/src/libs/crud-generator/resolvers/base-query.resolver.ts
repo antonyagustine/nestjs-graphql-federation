@@ -33,7 +33,7 @@ export function BaseQueryResolver<TDto, TFindFilter>(
     constructor(protected readonly queryBus: QueryBus) { }
 
     @Query(() => classRef, { name: `find${options.name}ById`, nullable: true })
-    async findById(@Args('id') id: string): Promise<TDto | null> {
+    async findById(@Args(`${options.name.toLowerCase()}Id`) id: string): Promise<TDto | null> {
       if (!findById) {
         throw new Error('FindById query is not defined in options');
       }

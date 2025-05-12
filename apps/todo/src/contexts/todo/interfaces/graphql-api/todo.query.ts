@@ -12,7 +12,7 @@ export class TodoQuery {
 
   @Query(() => [TodoDTO], { nullable: true })
   async todoList(
-    @Args('pagination') pagination: TodoPaginationInput,
+    @Args('pagination', { nullable: true }) pagination: TodoPaginationInput = { page: 1, limit: 10 },
     @Args('filter', { nullable: true }) filter?: TodoFilterInput,
     @Args('sorting', { nullable: true, type: () => [TodoSortingInput] }) sorting?: TodoSortingInput[]
   ): Promise<TodoDTO[] | null> {

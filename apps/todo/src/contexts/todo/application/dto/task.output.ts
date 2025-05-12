@@ -1,4 +1,4 @@
-import { Directive, Field, ObjectType } from "@nestjs/graphql";
+import { Directive, Field, ID, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class CreatedInfo {
@@ -19,8 +19,11 @@ export class ModifiedInfo {
 }
 
 @ObjectType()
+@Directive('@extends')
+@Directive('@key(fields: "userId")')
 export class Assignee {
-  @Field()
+  @Field(() => ID)
+  @Directive('@external')
   userId: string;
 
   @Field()
@@ -33,7 +36,7 @@ export class Assignee {
 @ObjectType()
 @Directive('@key(fields: "todoId")')
 export class TodoDTO {
-  @Field()
+  @Field(() => ID)
   todoId: string;
 
   @Field()
@@ -51,7 +54,10 @@ export class TodoDTO {
   @Field(() => ModifiedInfo, { nullable: true })
   modifiedInfo: ModifiedInfo;
 
-  @Field(() => Assignee)
+  @Field(() => String, { nullable: true })
+  assigneeId?: string;
+
+  @Field(() => Assignee, { nullable: true })
   assignee?: Assignee;
 }
 

@@ -4,11 +4,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
+import { MercuriusFederationDriver, MercuriusFederationDriverConfig } from '@nestjs/mercurius';
 
 import { UserModule } from '@user/contexts/user/user.module';
 import { dataSourceOptions } from '@user/data-config/data-source';
-import { UserDTO } from '@user/contexts/user/application/dto/user.output';
 
 @Module({
   imports: [
@@ -21,21 +20,15 @@ import { UserDTO } from '@user/contexts/user/application/dto/user.output';
           ...dataSourceOptions,
           entities: [join(__dirname, '../contexts/user/infrastructure/database/models/**/*.model{.ts,.js}')]
         };
-      },
+      }
     }),
     CqrsModule.forRoot({}),
-    GraphQLModule.forRoot<MercuriusDriverConfig>({
-      driver: MercuriusDriver,
+    GraphQLModule.forRoot<MercuriusFederationDriverConfig>({
+      driver: MercuriusFederationDriver,
       path: '/user',
-      graphiql: true,
-      debug: true,
       autoSchemaFile: {
         federation: 2,
-        path: join(process.cwd(), 'user-schema.gql'),
-      },
-      buildSchemaOptions: {
-        orphanedTypes: [UserDTO],
-      },
+      }
     }),
     UserModule
   ]

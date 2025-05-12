@@ -9,7 +9,7 @@ export class CreateTodoInput {
   description?: string;
 
   @Field({ nullable: true })
-  created_by?: string;
+  createdBy?: string;
 
   @Field()
   assigneeId: string;

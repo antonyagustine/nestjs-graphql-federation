@@ -1,5 +1,4 @@
-
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusGatewayDriver, MercuriusGatewayDriverConfig } from '@nestjs/mercurius';
 
@@ -7,13 +6,15 @@ import { MercuriusGatewayDriver, MercuriusGatewayDriverConfig } from '@nestjs/me
   imports: [
     GraphQLModule.forRoot<MercuriusGatewayDriverConfig>({
       driver: MercuriusGatewayDriver,
-      debug: true,
       graphiql: true,
-      
+      debug: true,
+      autoSchemaFile: {
+        federation: 2,
+      },
       gateway: {
         errorHandler(error, service) {
-          console.error('Error in service:', JSON.stringify(service, null, 2));
-          console.error('Error details:', JSON.stringify(error, null, 2));
+          Logger.error('Error in service:', service, error);
+
           return error;
         },
         services: [

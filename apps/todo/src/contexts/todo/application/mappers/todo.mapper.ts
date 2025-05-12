@@ -9,6 +9,7 @@ export class TodoModelToDTOMapper implements ApplicationMapper<TodoModel, TodoDT
       todoId: todo.todoId,
       title: todo.title,
       description: todo.description,
+      assigneeId: todo.assigneeId,
       createdInfo: {
         createdAt: todo.createdAt,
         user: todo.createdBy
