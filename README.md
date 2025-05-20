@@ -30,9 +30,9 @@ npm run migration -- --app=todo --command=run
 Start all required applications:
 
 ```bash
-npm run start api-gateway
-npm run start user
-npm run start todo
+npm run start -- api-gateway
+npm run start -- user
+npm run start -- todo
 ```
 
 > 💡 You can run these in parallel in separate terminal tabs for development.
@@ -108,3 +108,90 @@ Here's the updated documentation section with your requested addition:
   - Reference the built `data-source.js` file from `dist/apps/<app>/data-config/data-source.js`
 
 > 🔔 **Note**: Each app is a separate microservice and is deployed on a different port.
+
+
+
+### Folder structure.
+
+src/
+├── modules/
+│   └── todo/
+│       ├── application/                     # Application layer
+│       │   ├── commands/
+│       │   │   ├── create-todo/
+│       │   │   │   ├── create-todo.command.ts
+│       │   │   │   ├── create-todo.handler.ts
+│       │   │   │   ├── create-todo.response.ts
+│       │   │   │   └── create-todo.validator.ts (optional)
+│       │   │   ├── update-todo/
+│       │   │   │   ├── update-todo.command.ts
+│       │   │   │   ├── update-todo.handler.ts
+│       │   │   │   └── update-todo.response.ts
+│       │   │   └── delete-todo/
+│       │   │       ├── delete-todo.command.ts
+│       │   │       ├── delete-todo.handler.ts
+│       │   │       └── delete-todo.response.ts
+│       │   ├── queries/
+│       │   │   ├── get-todo-by-id/
+│       │   │   │   ├── get-todo-by-id.query.ts
+│       │   │   │   ├── get-todo-by-id.handler.ts
+│       │   │   │   └── get-todo-by-id.response.ts
+│       │   │   └── get-all-todos/
+│       │   │       ├── get-all-todos.query.ts
+│       │   │       ├── get-all-todos.handler.ts
+│       │   │       └── get-all-todos.response.ts
+│       │   ├── dto/
+│       │   │   ├── create-todo.input.ts
+│       │   │   ├── update-todo.input.ts
+│       │   │   └── todo.output.ts
+│       │   ├── services/
+│       │   │   └── todo.service.ts
+│       │   └── mappers/
+│       │       └── todo.mapper.ts (toDto, toDomain, toPersistence)
+│
+│       ├── domain/                          # Domain layer (business rules)
+│       │   ├── aggregates/
+│       │   │   └── todo.aggregate.ts
+│       │   ├── entities/
+│       │   │   └── todo.entity.ts
+│       │   ├── value-objects/
+│       │   │   └── todo-id.vo.ts
+│       │   ├── events/
+│       │   │   └── todo-created.event.ts
+│
+│       ├── infrastructure/                  # Infrastructure (frameworks/tools)
+│       │   ├── database/
+│       │   │   ├── models/
+│       │   │   │   └── todo.orm-entity.ts
+│       │   │   ├── repositories/
+│       │   │   │   └── todo.repository.impl.ts (implements domain interface)
+│       │   │   └── database.module.ts
+│       │   ├── messaging/                   # Optional (NATS / Kafka etc.)
+│       │   │   └── nats.todo.producer.ts
+│       │   └── mappers/
+│       │       └── orm-to-domain.mapper.ts
+│
+│       ├── interfaces/                      # Transport layer
+│       │   ├── graphql/
+│       │   │   ├── todo.resolver.ts
+│       │   │   └── graphql.module.ts
+│       │   └── rest/                        # Optional REST interface
+│       │       ├── todo.controller.ts
+│       │       └── rest.module.ts
+│
+│       └── todo.module.ts                   # NestJS Feature Module
+│
+├── libs/
+│   └── core-domain/
+│       ├── src/
+│       │   └── lib/
+│       │       ├── aggregate-root.ts
+│       │       ├── entity.ts
+│       │       ├── unique-identifier.ts
+│       │       ├── value-object.ts
+│       │       ├── domain-event.ts
+│       │       └── event-publisher.ts
+│       └── index.ts
+│
+├── app.module.ts
+└── main.ts
